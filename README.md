@@ -5,7 +5,8 @@ It just for my **Study**.
 # Used Technology
 - HTML5
 - CSS3
-- Node.js (JavaScript)
+- [Node.js](https://nodejs.org/en/)
+- [electron](https://electron.atom.io)
 
 # Referenced Idea
 I reference this idea from https://github.com/jwasham/computer-science-flash-cards so thanks to [@jwasham](https://github.com/jwasham)
