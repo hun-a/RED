@@ -18,3 +18,7 @@ app.on('ready', () => {
     win = null;
   });
 });
+// const syncDb = require('./data/sync-db');
+// syncDb().then(_ => {
+//   console.log('db connected!');
+// });

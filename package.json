@@ -17,12 +17,13 @@
   },
   "homepage": "https://github.com/seunghun-kim/RED#readme",
   "devDependencies": {
+    "electron-prebuilt": "^1.4.13",
     "mocha": "^3.2.0",
     "should": "^11.2.1",
     "supertest": "^3.0.0"
   },
   "dependencies": {
-    "electron-prebuilt": "^1.4.13",
+    "sequelize": "^3.30.4",
     "sqlite3": "^3.1.8"
   }
 }
