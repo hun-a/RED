@@ -57,7 +57,7 @@ describe('GET /red', () => {
 
     it('it should returns only algorithms', (done) => {
       request(app)
-          .get('/red?category='+ encodeURIComponent('algorithm'))
+          .get('/red?category=' + encodeURIComponent('algorithm'))
           .end((err, res) => {
             res.body.should.have.lengthOf(1);
             done();
@@ -69,6 +69,39 @@ describe('GET /red', () => {
     it('should returns 400 when limit and offset are not numbers', (done) => {
       request(app)
           .get('/red?offset=a&limit=b')
+          .expect(400)
+          .end(done);
+    });
+  });
+});
+
+describe('GET /red:id', () => {
+  before(() => models.sequelize.sync({force: true}));
+  before(() => models.Red.bulkCreate(contents));
+
+  describe('success', () => {
+    it('should have property of id', (done) => {
+      request(app)
+          .get('/red/1')
+          .end((err, res) => {
+            res.body.should.have.property('id', 1);
+            done();
+          });
+
+    });
+  });
+
+  describe('fail', () => {
+    it('should returns 404 when id is not exists', (done) => {
+      request(app)
+          .get('/red/10000')
+          .expect(404)
+          .end(done);
+    });
+
+    it('should returns 400 when id is Not a Number', (done) => {
+      request(app)
+          .get('/red/aa')
           .expect(400)
           .end(done);
     });

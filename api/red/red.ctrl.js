@@ -38,7 +38,20 @@ const index = function(req, res) {
 };
 
 const show = function(req, res) {
+  const id = parseInt(req.params.id, 10);
+  if (Number.isNaN(id)) {
+    return res.status(400).end();
+  }
 
+  models.Red.findOne({
+        where: {id}
+      })
+      .then(content => {
+        if (!content) {
+          return res.status(404).end();
+        }
+        res.json(content);
+      });
 };
 
 const create = function(req, res) {
