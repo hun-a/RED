@@ -65,9 +65,12 @@ describe('GET /red', () => {
     });
   });
 
-
-
   describe('fail', () => {
-
+    it('should returns 400 when limit and offset are not numbers', (done) => {
+      request(app)
+          .get('/red?offset=a&limit=b')
+          .expect(400)
+          .end(done);
+    });
   });
 });
