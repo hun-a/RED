@@ -31,7 +31,10 @@ describe('GET /red', () => {
       request(app)
         .get('/red')
         .expect(200)
-        .end(done);
+        .end((err, res) => {
+          res.body.should.have.lengthOf(3);
+          done();
+        });
     });
 
     it('should returns contents as array', (done) => {
