@@ -20,7 +20,8 @@ const Red = sequelize.define('RED', {
     type: Sequelize.STRING(3000)
   },
   readCount: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   },
   isKnown: {
     type: Sequelize.STRING(1),

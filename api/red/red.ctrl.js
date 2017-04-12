@@ -1,7 +1,28 @@
 const models = require('../../data/models');
 
 const index = function(req, res) {
-  res.send('hello red!');
+  let options = {};
+  // for paging variables
+  let offset = parseInt(req.query.offset, 10);
+  const limit = parseInt(req.query.limit, 10);
+  // for searching specific category
+  const category = req.query.category;
+  
+  if (offset && limit) {
+    options.offset = offset;
+    options.limit = limit;
+  } 
+
+  if (category) {
+    options.where = {
+      category
+    };
+  }
+
+  models.Red.findAll(options)
+      .then(contents => {
+        res.json(contents);
+      });
 };
 
 const show = function(req, res) {
