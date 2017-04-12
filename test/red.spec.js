@@ -27,7 +27,7 @@ describe('GET /red', () => {
   before(() => models.Red.bulkCreate(contents));
 
   describe('success', () => {
-    it('should returns status code as 200', (done) => {
+    it('should returns status code as 200 and length is 3', (done) => {
       request(app)
         .get('/red')
         .expect(200)
@@ -43,11 +43,11 @@ describe('GET /red', () => {
         });
     });
 
-    it('it should returns datas from 1 to 3', (done) => {
+    it('it should returns datas from 1 to 2', (done) => {
       request(app)
-          .get('/red?offset=0&limit=3')
+          .get('/red?offset=1&limit=2')
           .end((err, res) => {
-            res.body.should.have.lengthOf(3);
+            res.body.should.have.lengthOf(2);
             done();
           });
     });

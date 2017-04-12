@@ -8,8 +8,10 @@ const index = function(req, res) {
   // for searching specific category
   const category = req.query.category;
   
-  if (offset && limit) {
-    options.offset = offset;
+  if (limit) {
+    if (offset > 0) {
+      options.offset = offset;
+    }
     options.limit = limit;
   } 
 
