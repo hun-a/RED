@@ -1,24 +1,19 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const syncDb = require('./data/sync-db');
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const red = require('./api/red');
+const app = express();
 
-syncDb().then(_ => {
-  console.log('Database loading!');
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan('dev'));
+}
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-app.on('ready', () => {
-  // create the main window
-  const win = new BrowserWindow({
-    width: 512,
-    height: 1024
-  });
-  win.loadURL('file://' + __dirname + '/view/index.html');
-  win.on('closed', () => {
-    win = null;
-  });
-});
-// const syncDb = require('./data/sync-db');
-// syncDb().then(_ => {
-//   console.log('db connected!');
+// app.get('/', () => {
+//   red();
 // });
+// add router
+app.use('/red', red);
+
+module.exports = app;
