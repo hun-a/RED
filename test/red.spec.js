@@ -201,3 +201,126 @@ describe('POST /red', () => {
     });
   });
 });
+
+describe('PUT /red', () => {
+  before(() => models.sequelize.sync({force: true}));
+  before(() => models.Red.bulkCreate(contents));
+
+  describe('success', () => {
+    let body;
+    const data = {
+      category: 'testing',
+      title: 'This is title',
+      contents: 'Quality Assurance',
+      code: ''
+    };
+
+    before(done => {
+      request(app)
+          .put('/red/1')
+          .send(data)
+          .expect(201)
+          .end((err, res) => {
+            body = res.body;
+            done();
+          });
+    });
+
+    it('should returns changed category', () => {
+      body.should.have.property('category', data.category);
+    });
+
+    it('should returns changed title', () => {
+      body.should.have.property('title', data.title);
+    });
+
+    it('should returns changed contents', () => {
+      body.should.have.property('contents', data.contents);
+    });
+
+    it('should returns changed code', () => {
+      body.should.have.property('code', data.code);
+    });
+  });
+
+  describe('fail', () => {
+    it('should returns 400 when id is not a number', done => {
+      request(app)
+          .put('/red/one')
+          .expect(400)
+          .end(done);
+    });
+
+    it('should returns 404 when id is not exists', done => {
+      const data = {
+        category: 'computer',
+        title: 'history of computer',
+        contents: 'Long time ago...',
+        code: 'hello old world!'
+      };
+
+      request(app)
+          .put('/red/109283')
+          .send(data)
+          .expect(404)
+          .end(done);
+    });
+
+    it('should returns 400 when category is omitted', done => {
+      const data = {
+        title: 'My test',
+        contents: 'This is test',
+        code: 'abc = abc;'
+      };
+
+      request(app)
+          .put('/red/1')
+          .send(data)
+          .expect(400)
+          .end(done);
+    });
+
+    it('should returns 400 when title is omitted', done => {
+      const data = {
+        category: 'Test',
+        contents: 'This is test',
+        code: 'abc = abc;'
+      };
+
+      request(app)
+          .put('/red/1')
+          .send(data)
+          .expect(400)
+          .end(done);
+    });
+
+    it('should returns 409 when title is duplicated', done => {
+      const data = {
+        category: 'network',
+        title: 'IPv4',
+        contents: 'Is this duplicate?',
+        code: 'abc = abc;'
+      };
+
+      request(app)
+          .put('/red/1')
+          .send(data)
+          .expect(409)
+          .end(done);
+    });
+
+    it('should returns 400 when contents is omitted', done => {
+      const data = {
+        category: 'Test',
+        title: 'My test',
+        code: 'abc = abc;'
+      };
+
+      request(app)
+          .put('/red/1')
+          .send(data)
+          .expect(400)
+          .end(done);
+    });
+  });
+});

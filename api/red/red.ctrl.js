@@ -88,7 +88,47 @@ const create = function(req, res) {
 };
 
 const update = function(req, res) {
+  const id = parseInt(req.params.id, 10);
+  if (Number.isNaN(id)) {
+    return res.status(400).end();
+  }
 
+  const category = req.body.category;
+  if (!category) {
+    return res.status(400).end();
+  }
+
+  const title = req.body.title;
+  if (!title) {
+    return res.status(400).end();
+  }
+
+  const contents = req.body.contents;
+  if (!contents) {
+    return res.status(400).end();
+  }
+
+  const code = req.body.code;
+
+  models.Red.findOne({ where: { id }})
+      .then(content => {
+        if (!content) {
+          return res.status(404).end();
+        }
+        content.category = category;
+        content.title = title;
+        content.contents = contents;
+        content.code = code;
+        content.save()
+            .then(_ => {
+              res.json(content);
+            })
+            .catch(err => {
+              if (err.name === 'SequelizeUniqueConstraintError') {
+                return res.status(409).end();
+              }
+            });
+      });
 };
 
 const destroy = function(req, res) {
