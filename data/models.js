@@ -7,11 +7,11 @@ const sequelize = new Sequelize({
 
 const Red = sequelize.define('RED', {
   category: {
-    type: Sequelize.STRING(100),
-    unique: true
+    type: Sequelize.STRING(100)
   },
   title: {
-    type: Sequelize.STRING(100)
+    type: Sequelize.STRING(100),
+    unique: true
   },
   contents: {
     type: Sequelize.STRING(2000)

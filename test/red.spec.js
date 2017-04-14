@@ -107,3 +107,97 @@ describe('GET /red:id', () => {
     });
   });
 });
+
+describe('POST /red', () => {
+  before(() => models.sequelize.sync({force: true}));
+  before(() => models.Red.bulkCreate(contents));
+    
+  describe('success', () => {
+    let body, title = 'QA';
+    const data = {
+      category: 'testing',
+      title,
+      contents: 'Quality Assurance',
+      code: ''
+    };
+
+    before(done => {
+      request(app)
+          .post('/red')
+          .send(data)
+          .expect(201)
+          .end((err, res) => {
+            body = res.body;
+            done();
+          });
+    });
+
+    it ('should have a id', () => {
+      body.should.have.property('id');
+    });
+
+    it('should have title and same as inputed title', () => {
+      body.should.have.property('title', title);
+    });
+  });
+
+  describe('fail', () => {
+
+    it('should returns 400 when category is omitted', (done) => {
+      const data = {
+        title: 'Test',
+        contents: 'Quality Assurance',
+        code: ''
+      };
+
+      request(app)
+          .post('/red')
+          .send(data)
+          .expect(400)
+          .end(done);
+    });
+
+    it('should returns 400 when title is omitted', (done) => {
+      const data = {
+        category: 'testing',
+        contents: 'Quality Assurance',
+        code: ''
+      };
+
+      request(app)
+          .post('/red')
+          .send(data)
+          .expect(400)
+          .end(done);
+    });
+
+    it('should returns 400 when content is omitted', (done) => {
+      const data = {
+        category: 'testing',
+        title: 'Test',
+        code: ''
+      };
+
+      request(app)
+          .post('/red')
+          .send(data)
+          .expect(400)
+          .end(done);
+    });
+
+    it('should returns 409 when title is duplicated', (done) => {
+      const data = {
+        category: 'testing',
+        title: 'QA',
+        contents: 'Quality Assurance',
+        code: ''
+      };
+
+      request(app)
+          .post('/red')
+          .send(data)
+          .expect(409)
+          .end(done);
+    });
+  });
+});

@@ -55,7 +55,36 @@ const show = function(req, res) {
 };
 
 const create = function(req, res) {
+  const category = req.body.category;
+  if (!category) {
+    return res.status(400).end();
+  }
 
+  const title = req.body.title;
+  if (!title) {
+    return res.status(400).end();
+  }
+   
+  const contents = req.body.contents;
+
+  if (!contents) {
+    return res.status(400).end();
+  }
+
+  const code = req.body.code || '';
+  const data = {
+    category, title, contents, code
+  };
+
+  models.Red.create(data)
+      .then(content => {
+        res.status(201).json(content);
+      })
+      .catch(err => {
+        if (err.name === 'SequelizeUniqueConstraintError') {
+          return res.status(409).end();
+        }
+      });
 };
 
 const update = function(req, res) {
