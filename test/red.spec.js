@@ -202,7 +202,7 @@ describe('POST /red', () => {
   });
 });
 
-describe('PUT /red', () => {
+describe('PUT /red/:id', () => {
   before(() => models.sequelize.sync({force: true}));
   before(() => models.Red.bulkCreate(contents));
 
@@ -324,3 +324,33 @@ describe('PUT /red', () => {
     });
   });
 });
+
+describe('DELETE /red/:id', () => {
+  before(() => models.sequelize.sync({force: true}));
+  before(() => models.Red.bulkCreate(contents));
+
+  describe('success', () => {
+    it('should returns 204 when delete is success', done => {
+      request(app)
+          .delete('/red/1')
+          .expect(204)
+          .end(done);
+    });
+  });
+
+  describe('fail', () => {
+    it('should returns 400 when id is not a number', done => {
+      request(app)
+          .delete('/red/one')
+          .expect(400)
+          .end(done);
+    });
+
+    it('should returns 404 when id is not exists in database', done => {
+      request(app)
+          .delete('/red/123561')
+          .expect(404)
+          .end(done);
+    });
+  });
+})

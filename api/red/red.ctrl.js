@@ -132,7 +132,18 @@ const update = function(req, res) {
 };
 
 const destroy = function(req, res) {
+  const id = parseInt(req.params.id, 10);
+  if (Number.isNaN(id)) {
+    return res.status(400).end();
+  }
 
+  models.Red.destroy({ where: {id} })
+      .then(count => {
+        if (count === 0) {
+          return res.status(404).end();
+        }
+        res.status(204).end();
+      });
 };
 
 module.exports = {
