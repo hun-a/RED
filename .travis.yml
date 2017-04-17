@@ -1,0 +1,13 @@
+sudo: required
+
+language: node_js
+
+node_js:
+    - 7
+    - 6
+
+install:
+    - npm install
+
+script:
+    - npm test
