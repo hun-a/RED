@@ -1,4 +1,7 @@
 # RED
+
+[![Build Status](https://travis-ci.org/seunghun-kim/RED.png)](https://travis-ci.org/seunghun-kim/RED)
+
 This project's full name is **Read Every Day** what means that reading small snippets about **Computer Science** every day.
 It just for my **Study**.
 
